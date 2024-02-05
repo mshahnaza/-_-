@@ -16,6 +16,8 @@ public class Main {
         String[] word = addWords();
         String[] wordDescription = addWordDescriptions();
 
+        ArrayList<String> alphabet = checkAlphabet();
+
         int wordIndex = random.nextInt(10);
 
         String wordToGuess = word[wordIndex];
@@ -32,12 +34,38 @@ public class Main {
 
         System.out.println("                      " + wordDescription[wordIndex]);
         System.out.println();
+        ArrayList<String> opennedLetters = addOpennedLetters(wordToGuess);
+        openLetters(opennedLetters);
 
         outer:
         while (guessedLetters.size() != wordToGuess.length()) {
             int amountOfLetter = 0;
             System.out.print("Enter the data: ");
             enteredLetterOrWord = scanner.next();
+
+            if (!(alphabet.contains(enteredLetterOrWord.toUpperCase())) && enteredLetterOrWord.length() == 1) {
+                message = "already called";
+
+                playersNumber++;
+
+                System.out.println("\033[H\033[J");
+                System.out.println("                      " + wordDescription[wordIndex]);
+                System.out.println();
+                System.out.println("                             " + opennedLetters);
+                showAlphabet(alphabet);
+                showPlayersAndScores(players, playersScores, playersAmount, message, playersNumber);
+                if (message != "player won") {
+                    System.out.print("                       「 " + players.get(playersNumber) + " 」,your turn ➢  ");
+                }
+
+                continue;
+            }
+
+            for (int i = 0; i < alphabet.size(); i++) {
+                if (alphabet.get(i).equals(enteredLetterOrWord.toUpperCase())) {
+                    alphabet.set(i, "⊠");
+                }
+            }
 
             if (enteredLetterOrWord.length() == 1) {
                 if (wordToGuess.toLowerCase().contains(enteredLetterOrWord.toLowerCase())) {
@@ -46,6 +74,7 @@ public class Main {
                         if (wordToGuess.toLowerCase().charAt(i) == enteredLetterOrWord.toLowerCase().charAt(0)) {
                             amountOfLetter++;
                             guessedLetters.add(enteredLetterOrWord);
+                            opennedLetters.set(i, enteredLetterOrWord.toUpperCase());
                         }
                     }
 
@@ -73,6 +102,8 @@ public class Main {
                         message = "other players try to guess word";
                         System.out.println("                      " + wordDescription[wordIndex]);
                         System.out.println();
+                        System.out.println("                             " + opennedLetters);
+                        showAlphabet(alphabet);
                         showPlayersAndScores(players, playersScores, playersAmount, message, playersNumber);
                         if (message != "player won") {
                             System.out.print(
@@ -81,8 +112,7 @@ public class Main {
                         continue outer;
                     }
                 }
-            }
-            else {
+            } else {
                 if (enteredLetterOrWord.toLowerCase().equals(wordToGuess.toLowerCase())) {
                     message = "player won";
                     showMessage(message, players, playersNumber, playersScores);
@@ -156,6 +186,33 @@ public class Main {
         return wordDescription;
     }
 
+    public static ArrayList<String> checkAlphabet() {
+        ArrayList<String> alphabet = new ArrayList<>(
+                Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                        "N", "O", "P",
+                        "Q", "R",
+                        "S", "T", "U", "V", "W", "X", "Y", "Z"));
+        return alphabet;
+    }
+
+    public static void showAlphabet(ArrayList<String> alphabet) {
+        System.out.print("                                                            ");
+        for (int i = 0; i < 9; i++) {
+            System.out.print(alphabet.get(i) + " ");
+        }
+        System.out.println();
+        System.out.print("                                                            ");
+        for (int i = 9; i < 18; i++) {
+            System.out.print(alphabet.get(i) + " ");
+        }
+        System.out.println();
+        System.out.print("                                                            ");
+        for (int i = 18; i < 26; i++) {
+            System.out.print(alphabet.get(i) + " ");
+        }
+        System.out.println();
+    }
+
     public static void showMessage(String message, ArrayList<String> players, int playersNumber,
                                    ArrayList<Integer> playersScores) {
         if (message == "guessed") {
@@ -180,6 +237,12 @@ public class Main {
         }
     }
 
+    public static void showWhoseTurn(String message, ArrayList<String> players, int playersNumber) {
+        if (message != "player won") {
+            System.out.print("                       「 " + players.get(playersNumber) + " 」,your turn ➢  ");
+        }
+    }
+
     public static void showPlayersAndScores(ArrayList<String> players, ArrayList<Integer> playersScores,
                                             int playersAmount, String message, int playersNumber) {
         for (int i = 0; i < players.size() - 1; i++) {
@@ -190,6 +253,23 @@ public class Main {
         System.out.print(players.get(playersAmount - 1) + " ➱  ");
         System.out.print(playersScores.get(playersAmount - 1));
         showMessage(message, players, playersNumber, playersScores);
+        System.out.println();
+    }
+
+    public static ArrayList<String> addOpennedLetters(String wordToGuess) {
+        ArrayList<String> opennedLetters = new ArrayList<String>();
+        for (int i = 0; i < wordToGuess.length(); i++) {
+            opennedLetters.add("⬜ ");
+        }
+
+        return opennedLetters;
+    }
+
+    public static void openLetters(ArrayList<String> opennedLetters) {
+        System.out.print("                             ");
+        for (int i = 0; i < opennedLetters.size(); i++) {
+            System.out.print(opennedLetters.get(i));
+        }
         System.out.println();
     }
 }
