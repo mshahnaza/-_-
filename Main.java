@@ -82,6 +82,24 @@ public class Main {
                     }
                 }
             }
+            else {
+                if (enteredLetterOrWord.toLowerCase().equals(wordToGuess.toLowerCase())) {
+                    message = "player won";
+                    showMessage(message, players, playersNumber, playersScores);
+                    break;
+                } else {
+                    message = "player is out";
+                    System.out.println("\033[H\033[J");
+                    System.out.println("❌   " + players.get(playersNumber) + " ,you are out of the game!  ❌");
+                    System.out.println();
+                    playersScores.remove(playersNumber);
+                    players.remove(playersNumber);
+                    playersAmount--;
+                    if (playersNumber >= playersAmount) {
+                        playersNumber = 0;
+                    }
+                }
+            }
         }
     }
 
