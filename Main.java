@@ -131,6 +131,14 @@ public class Main {
                 }
             }
         }
+
+        clearScreen(message);
+        System.out.println("                      " + wordDescription[wordIndex]);
+        System.out.println();
+        openLetters(opennedLetters);
+        showAlphabet(alphabet);
+        showPlayersAndScores(players, playersScores, playersAmount, message, playersNumber);
+        showWhoseTurn(message, players, playersNumber);
     }
 
     public static ArrayList<String> addPlayers(Scanner scanner, int playersAmount) {
