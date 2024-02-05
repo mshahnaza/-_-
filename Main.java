@@ -37,8 +37,7 @@ public class Main {
         ArrayList<String> opennedLetters = addOpennedLetters(wordToGuess);
         openLetters(opennedLetters);
 
-        outer:
-        while (guessedLetters.size() != wordToGuess.length()) {
+        outer: while (guessedLetters.size() != wordToGuess.length()) {
             int amountOfLetter = 0;
             System.out.print("Enter the data: ");
             enteredLetterOrWord = scanner.next();
@@ -130,15 +129,20 @@ public class Main {
                     }
                 }
             }
+
+            if (playersAmount == 1) {
+                message = "player won";
+            }
+
+            clearScreen(message);
+            System.out.println("                      " + wordDescription[wordIndex]);
+            System.out.println();
+            openLetters(opennedLetters);
+            showAlphabet(alphabet);
+            showPlayersAndScores(players, playersScores, playersAmount, message, playersNumber);
+            showWhoseTurn(message, players, playersNumber);
         }
 
-        clearScreen(message);
-        System.out.println("                      " + wordDescription[wordIndex]);
-        System.out.println();
-        openLetters(opennedLetters);
-        showAlphabet(alphabet);
-        showPlayersAndScores(players, playersScores, playersAmount, message, playersNumber);
-        showWhoseTurn(message, players, playersNumber);
     }
 
     public static ArrayList<String> addPlayers(Scanner scanner, int playersAmount) {
@@ -280,4 +284,5 @@ public class Main {
         }
         System.out.println();
     }
+
 }
